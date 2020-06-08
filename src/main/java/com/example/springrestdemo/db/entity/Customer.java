@@ -1,5 +1,7 @@
 package com.example.springrestdemo.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Customer {
     @Column(name ="lastname")
     private String lastName;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "customer")
     private List<Contract> contracts;
 

@@ -1,6 +1,7 @@
 package com.example.springrestdemo.db.entity;
 
 import com.example.springrestdemo.db.entity.enumeration.ContractType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -12,9 +13,11 @@ public class Contract {
     @Column(name = "contract_id")
     private long contractId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "contract_type")
     private ContractType contractType;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

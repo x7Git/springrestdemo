@@ -2,6 +2,8 @@ package com.example.springrestdemo.rest;
 
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerService;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
@@ -31,18 +33,25 @@ class CustomerControllerTest {
     @InjectMocks
     private CustomerController classUnderTest;
 
+    private static final long CUSTOMER_ID= 3489432L;
+    private Customer customer;
+
+    @BeforeEach
+    void setUp(){
+        customer = new Customer("Lokesh", "Gupta");
+    }
+
     @Test
     void postCustomer_CustomerAdded_ok() {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Customer customer = new Customer( "Lokesh", "Gupta");
-        when(mockCustomerService.addCustomer(customer)).thenReturn(2L);
+        when(mockCustomerService.addCustomer(customer)).thenReturn(CUSTOMER_ID);
         //Act
         ResponseEntity<Long> responseEntity = classUnderTest.postCustomer(customer);
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        assertThat(responseEntity.getBody()).isEqualTo(2);
+        assertThat(responseEntity.getBody()).isEqualTo(CUSTOMER_ID);
     }
 
     @Test
@@ -50,7 +59,6 @@ class CustomerControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Customer customer = new Customer( "Lokesh", "Gupta");
         when(mockCustomerService.getCustomers()).thenReturn(Collections.singletonList(customer));
         //Act
         ResponseEntity<List<Customer>> responseEntity = classUnderTest.getCustomers();
@@ -65,7 +73,6 @@ class CustomerControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Customer customer = new Customer( "Lokesh", "Gupta");
         when(mockCustomerService.getCustomerById(anyLong())).thenReturn(customer);
         //Act
         ResponseEntity<Customer> responseEntity = classUnderTest.getCustomer(234L);
@@ -75,11 +82,10 @@ class CustomerControllerTest {
     }
 
     @Test
-    void putCustomer_customerUpdated_okay() {
+    void putCustomer_customerUpdated_ok() {
             //Arrange
             MockHttpServletRequest request = new MockHttpServletRequest();
             RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-            Customer customer = new Customer( "Lokesh", "Gupta");
             //Act
             ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customer);
             //Assert
@@ -87,11 +93,10 @@ class CustomerControllerTest {
     }
 
     @Test
-    void deleteCustomer_customerDeleted_okay() {
+    void deleteCustomer_customerDeleted_ok() {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Customer customer = new Customer( "Lokesh", "Gupta");
         //Act
         ResponseEntity<String> responseEntity = classUnderTest.deleteCustomer(234L);
         //Assert

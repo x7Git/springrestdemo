@@ -3,7 +3,8 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
-import com.example.springrestdemo.rest.CustomerController;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.runner.JUnitPlatform;
@@ -18,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,12 +30,18 @@ class CustomerServiceTest {
     @InjectMocks
     private CustomerService classUnderTest;
     
-    private static final long CUSTOMERID= 3489432L;
+    private static final long CUSTOMER_ID = 3489432L;
+    private Customer customer;
+
+    @BeforeEach
+    void setUp() {
+        customer = new Customer("Lokesh", "Gupta");
+    }
+
     @Test
     void addCustomer() {
-        Customer expected = new Customer();
-        long result = classUnderTest.addCustomer(expected);
-        assertThat(result).isEqualTo(expected.getCustomerId());
+        long result = classUnderTest.addCustomer(customer);
+        assertThat(result).isEqualTo(customer.getCustomerId());
     }
 
     @Test
@@ -47,21 +53,21 @@ class CustomerServiceTest {
 
     @Test
     public void getCustomerById_NoCustomerFound_throwsNoCustomerFoundException() {
-        assertThrows(NoEntityFoundException.class, () -> classUnderTest.getCustomerById(CUSTOMERID));
+        assertThrows(NoEntityFoundException.class, () -> classUnderTest.getCustomerById(CUSTOMER_ID));
     }
 
     @Test
     public void getCustomerById_CustomerFound_ok() {
-        Customer expected = new Customer();
-        when(mockCustomerRepository.findById(CUSTOMERID)).thenReturn(Optional.of(expected));
-        Customer result = classUnderTest.getCustomerById(CUSTOMERID);
-        assertEquals(expected, result);
+        Customer customer = new Customer();
+        when(mockCustomerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        Customer result = classUnderTest.getCustomerById(CUSTOMER_ID);
+        assertEquals(customer, result);
     }
 
     @Test
     void deleteCustomer() {
-        classUnderTest.deleteCustomer(CUSTOMERID);
-        verify(mockCustomerRepository).deleteById(CUSTOMERID);
+        classUnderTest.deleteCustomer(CUSTOMER_ID);
+        verify(mockCustomerRepository).deleteById(CUSTOMER_ID);
     }
 
     @Test

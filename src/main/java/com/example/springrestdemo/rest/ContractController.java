@@ -22,12 +22,8 @@ public class ContractController {
     }
 
     @DeleteMapping("/contract")
-    public void deleteContract(@RequestBody Contract contract){
+    public ResponseEntity<String> deleteContract(@RequestBody Contract contract){
         contractService.deleteContract(contract);
-    }
-
-    @DeleteMapping("/contracts/{customerId}")
-    public void deleteContracts(@PathVariable("customerId") long customerId){
-        contractService.deleteAllContractByCustomerId(customerId);
+        return ResponseEntity.noContent().build();
     }
 }

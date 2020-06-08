@@ -3,8 +3,6 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +10,6 @@ import java.util.List;
 
 @Service
 public class CustomerService {
-
 
     private final CustomerRepository repository;
 
