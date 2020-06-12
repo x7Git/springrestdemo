@@ -1,6 +1,5 @@
 package com.example.springrestdemo.rest;
 
-
 import com.example.springrestdemo.jwt.JwtRequest;
 import com.example.springrestdemo.jwt.JwtResponse;
 import com.example.springrestdemo.jwt.JwtTokenUtil;
