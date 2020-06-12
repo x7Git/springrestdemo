@@ -33,12 +33,13 @@ class ContractServiceTest {
     private ContractService classUnderTest;
     
     private static final long CUSTOMER_ID= 3489432L;
+    private static final long PRICE = 1599L;
     private Contract contract;
     private Customer customer;
 
     @BeforeEach
     void setUp() {
-        contract = new Contract(ContractType.DSL);
+        contract = new Contract(ContractType.DSL, PRICE);
         customer = new Customer();
     }
     @Ignore

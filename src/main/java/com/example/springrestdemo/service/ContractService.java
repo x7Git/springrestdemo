@@ -4,13 +4,13 @@ import com.example.springrestdemo.db.entity.Contract;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.ContractRepository;
 import com.example.springrestdemo.db.repository.CustomerRepository;
+import com.example.springrestdemo.exception.error.NoEntityFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class ContractService {
+    private Customer customer;
 
     private final ContractRepository contractRepository;
     private final CustomerRepository customerRepository;
@@ -26,16 +26,24 @@ public class ContractService {
     }
 
     public Long addContract(Contract contract, long customerId) {
-        Optional<Customer> customer = findCustomer(customerId);
-        if(customer.isPresent()){
-            contract.setCustomer(customer.get());
+        findCustomer(customerId);
+        contract.setCustomer(customer);
             contractRepository.save(contract);
             return contract.getContractId();
-        }
-        return null;
     }
 
-    protected Optional<Customer> findCustomer (long customerId){
-        return customerRepository.findById(customerId);
+    public Long calculatePrice(long customerId) {
+        findCustomer(customerId);
+        long calculatedPrice = 0L;
+        for(Contract contract : customer.getContracts()){
+            calculatedPrice += contract.getPrice();
+        }
+        return calculatedPrice;
     }
+
+    protected void findCustomer (long customerId){
+        customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new NoEntityFoundException(customerId));
+    }
+
 }

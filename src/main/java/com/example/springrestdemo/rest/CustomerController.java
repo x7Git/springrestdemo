@@ -18,28 +18,28 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customer/{customerId}")
+    @GetMapping("/" + CtxPath.CUSTOMER + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
     public ResponseEntity<Customer> getCustomer(@PathVariable("customerId") Long customerId) {
         return ResponseEntity.ok().body(customerService.getCustomerById(customerId));
     }
 
-    @GetMapping("/customers")
+    @GetMapping("/" + CtxPath.CUSTOMERS)
     public ResponseEntity<List<Customer>> getCustomers() {
         return ResponseEntity.ok().body(customerService.getCustomers());
     }
 
-    @PostMapping("/customer")
+    @PostMapping("/" + CtxPath.CUSTOMER)
     public ResponseEntity<Long> postCustomer(@RequestBody Customer customer) {
         return ResponseEntity.ok().body(customerService.addCustomer(customer));
     }
 
-    @PutMapping("/customer")
+    @PutMapping("/" + CtxPath.CUSTOMER)
     public ResponseEntity<String> putCustomer(@RequestBody Customer customer) {
         customerService.updateCustomer(customer);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/customer/{customerId}")
+    @DeleteMapping("/" + CtxPath.CUSTOMER + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
     public ResponseEntity<String> deleteCustomer(@PathVariable("customerId")Long customerId) {
         customerService.deleteCustomer(customerId);
         return ResponseEntity.noContent().build();

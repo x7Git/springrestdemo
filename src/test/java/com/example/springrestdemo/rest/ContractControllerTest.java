@@ -31,10 +31,10 @@ class ContractControllerTest {
 
     private Contract contract;
     private static final long CUSTOMER_ID = 3489432L;
-
+    private static final long PRICE = 1599L;
     @BeforeEach
     public void setup(){
-        contract = new Contract(ContractType.DSL);
+        contract = new Contract(ContractType.DSL,PRICE);
     }
 
     @Test
@@ -56,7 +56,7 @@ class ContractControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Contract contract = new Contract(ContractType.DSL);
+        Contract contract = new Contract(ContractType.DSL, PRICE);
         //Act
         ResponseEntity<String> responseEntity = classUnderTest.deleteContract(contract);
         //Assert

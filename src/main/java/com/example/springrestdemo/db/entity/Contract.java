@@ -2,6 +2,7 @@ package com.example.springrestdemo.db.entity;
 
 import com.example.springrestdemo.db.entity.enumeration.ContractType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contract_id")
+    @JsonIgnore
     private long contractId;
 
     @Enumerated(EnumType.STRING)
@@ -22,8 +24,12 @@ public class Contract {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Contract(ContractType contractType) {
+    @Column(name = "price")
+    private Long price;
+
+    public Contract(ContractType contractType, Long price) {
         this.contractType = contractType;
+        this.price = price;
     }
 
     public Contract() {
@@ -46,5 +52,13 @@ public class Contract {
     }
     public void setCustomer(Customer customer){
         this.customer = customer;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 }

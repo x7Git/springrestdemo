@@ -16,14 +16,19 @@ public class ContractController {
         this.contractService = contractService;
     }
 
-    @PostMapping("/contract/{customerId}")
+    @PostMapping("/" + CtxPath.CONTRACT + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
     public ResponseEntity<Long> postContract(@RequestBody Contract contract,@PathVariable("customerId") long customerId ){
         return ResponseEntity.ok().body(contractService.addContract(contract, customerId));
     }
 
-    @DeleteMapping("/contract")
+    @DeleteMapping("/" + CtxPath.CONTRACT)
     public ResponseEntity<String> deleteContract(@RequestBody Contract contract){
         contractService.deleteContract(contract);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/" + CtxPath.CALCULATE_PRICE + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
+    public ResponseEntity<Long> getPrice(@PathVariable(CtxPath.CUSTOMER_ID) long customerId){
+        return ResponseEntity.ok().body(contractService.calculatePrice(customerId));
     }
 }

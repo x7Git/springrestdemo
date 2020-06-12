@@ -6,7 +6,6 @@ public enum ContractType {
     IPTV("iptv");
 
     private String name;
-
     ContractType(String name){
         this.name = name;
     }
