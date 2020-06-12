@@ -2,6 +2,7 @@ package com.example.springrestdemo.rest;
 
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerService;
+import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,23 +36,12 @@ class CustomerControllerTest {
 
     private static final long CUSTOMER_ID= 3489432L;
     private Customer customer;
+    private CustomerDTO customerDTO;
 
     @BeforeEach
     void setUp(){
-        customer = new Customer("Lokesh", "Gupta");
-    }
-
-    @Test
-    void postCustomer_CustomerAdded_ok() {
-        //Arrange
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(mockCustomerService.addCustomer(customer)).thenReturn(CUSTOMER_ID);
-        //Act
-        ResponseEntity<Long> responseEntity = classUnderTest.postCustomer(customer);
-        //Assert
-        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        assertThat(responseEntity.getBody()).isEqualTo(CUSTOMER_ID);
+        customer = new Customer("username" , "Lokesh", "Gupta", "password");
+        customerDTO = new CustomerDTO();
     }
 
     @Test
@@ -87,7 +77,7 @@ class CustomerControllerTest {
             MockHttpServletRequest request = new MockHttpServletRequest();
             RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
             //Act
-            ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customer);
+            ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customerDTO);
             //Assert
             assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }

@@ -15,6 +15,9 @@ public class Customer {
     @JsonIgnore
     private long customerId;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(name ="name")
     private String name;
 
@@ -25,9 +28,15 @@ public class Customer {
     @OneToMany(mappedBy = "customer")
     private List<Contract> contracts;
 
-    public Customer(String name, String lastName){
-     this.name = name;
-     this.lastName = lastName;
+    @Column(name ="password")
+    @JsonIgnore
+    private String password;
+
+    public Customer(String username, String name, String lastName, String password) {
+        this.username = username;
+        this.name = name;
+        this.lastName = lastName;
+        this.password = password;
     }
 
     public Customer() {
@@ -35,6 +44,14 @@ public class Customer {
 
     public long getCustomerId() {
         return customerId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -57,4 +74,11 @@ public class Customer {
         return contracts;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

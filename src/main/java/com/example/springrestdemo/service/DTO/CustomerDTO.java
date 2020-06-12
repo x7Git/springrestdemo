@@ -1,8 +1,10 @@
 package com.example.springrestdemo.service.DTO;
 
-public class UserDTO {
+public class CustomerDTO {
     private String username;
     private String password;
+    private String name;
+    private String lastname;
 
     public String getUsername() {
         return username;
@@ -18,5 +20,21 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

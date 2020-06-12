@@ -3,6 +3,7 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
+import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,6 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public long addCustomer(Customer customer){
-        customerRepository.save(customer);
-        return customer.getCustomerId();
-    }
-
     public List<Customer> getCustomers(){
         return customerRepository.findAll();
     }
@@ -37,11 +33,15 @@ public class CustomerService {
         customerRepository.deleteById(customerId);
     }
 
-    public void updateCustomer(Customer customer){
-        findCustomer(customer.getCustomerId());
-        customer.setName(customer.getName());
-        customer.setLastName(customer.getLastName());
-        customerRepository.save(customer);
+    public void updateCustomer(CustomerDTO customer){
+        Customer newCustomer = customerRepository.findByUsername(customer.getUsername());
+        if(customer.getName() !=null)
+            newCustomer.setName(customer.getName());
+        if(customer.getLastname() !=null)
+            newCustomer.setLastName(customer.getLastname());
+        if(customer.getUsername() !=null)
+            newCustomer.setUsername(customer.getUsername());
+        customerRepository.save(newCustomer);
     }
 
     protected void findCustomer (long customerId){

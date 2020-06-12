@@ -3,6 +3,7 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
+import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,13 +36,7 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        customer = new Customer("Lokesh", "Gupta");
-    }
-
-    @Test
-    void addCustomer() {
-        long result = classUnderTest.addCustomer(customer);
-        assertThat(result).isEqualTo(customer.getCustomerId());
+        customer = new Customer("username" , "Lokesh", "Gupta", "password");
     }
 
     @Test
@@ -72,6 +67,6 @@ class CustomerServiceTest {
 
     @Test
     void updateCustomer_NoCustomerFound_throwsNoCustomerFoundException() {
-        assertThrows(NoEntityFoundException.class, () -> classUnderTest.updateCustomer(new Customer()));
+        assertThrows(NoEntityFoundException.class, () -> classUnderTest.updateCustomer(new CustomerDTO()));
     }
 }

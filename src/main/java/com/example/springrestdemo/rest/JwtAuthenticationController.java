@@ -3,7 +3,7 @@ package com.example.springrestdemo.rest;
 import com.example.springrestdemo.jwt.JwtRequest;
 import com.example.springrestdemo.jwt.JwtResponse;
 import com.example.springrestdemo.jwt.JwtTokenUtil;
-import com.example.springrestdemo.service.DTO.UserDTO;
+import com.example.springrestdemo.service.DTO.CustomerDTO;
 import com.example.springrestdemo.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 public class JwtAuthenticationController {
 
-	private AuthenticationManager authenticationManager;
-	private JwtTokenUtil jwtTokenUtil;
-	private JwtUserDetailsService userDetailsService;
+	private final AuthenticationManager authenticationManager;
+	private final JwtTokenUtil jwtTokenUtil;
+	private final JwtUserDetailsService userDetailsService;
 
 	@Autowired
 	public JwtAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
@@ -35,19 +35,15 @@ public class JwtAuthenticationController {
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
-
 		final String token = jwtTokenUtil.generateToken(userDetails);
-
 		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<?> saveUser(@RequestBody UserDTO user){
+	public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO user){
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 
