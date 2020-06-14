@@ -9,7 +9,7 @@ public class CtxPath {
     public static final String CUSTOMERS = "customers";
     public static final String CALCULATE_PRICE = "calculateprice";
     public static final String SYSTEM_ALIVE = "systemalive";
-    public static final String SIGN_IN = "signing";
+    public static final String SIGN_IN = "signin";
     public static final String LOG_IN = "login";
 
     private CtxPath() {

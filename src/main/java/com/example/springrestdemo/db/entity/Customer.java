@@ -3,6 +3,7 @@ package com.example.springrestdemo.db.entity;
 import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
@@ -30,7 +31,7 @@ public class Customer {
     private List<Contract> contracts;
 
     @Column(name ="password")
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name ="role")
