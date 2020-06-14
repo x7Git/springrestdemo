@@ -3,8 +3,8 @@ package com.example.springrestdemo.rest;
 import com.example.springrestdemo.authentication.JwtRequest;
 import com.example.springrestdemo.authentication.JwtResponse;
 import com.example.springrestdemo.authentication.JwtTokenUtil;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
-import com.example.springrestdemo.service.JwtUserDetailsService;
+import com.example.springrestdemo.db.entity.Customer;
+import com.example.springrestdemo.service.CustomerDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,10 +20,10 @@ public class AuthenticationController {
 
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenUtil jwtTokenUtil;
-	private final JwtUserDetailsService userDetailsService;
+	private final CustomerDetailsService userDetailsService;
 
 	@Autowired
-	public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+	public AuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, CustomerDetailsService userDetailsService) {
 		this.authenticationManager = authenticationManager;
 		this.jwtTokenUtil = jwtTokenUtil;
 		this.userDetailsService = userDetailsService;
@@ -39,7 +39,7 @@ public class AuthenticationController {
 	}
 	
 	@PostMapping("/" +CtxPath.SIGN_IN)
-	public ResponseEntity<?> saveCustomer(@RequestBody CustomerDTO user){
+	public ResponseEntity<?> saveCustomer(@RequestBody Customer user){
 		return ResponseEntity.ok(userDetailsService.save(user));
 	}
 

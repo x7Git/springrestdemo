@@ -3,7 +3,6 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,12 +32,13 @@ public class CustomerService {
         customerRepository.deleteById(customerId);
     }
 
-    public void updateCustomer(CustomerDTO customer){
-        Customer newCustomer = customerRepository.findByUsername(customer.getUsername());
+    public void updateCustomer(Customer customer){
+        Customer newCustomer = customerRepository.findByUsername(customer.getUsername())
+                .orElseThrow(() -> new NoEntityFoundException(customer.getUsername()));
         if(customer.getName() !=null)
             newCustomer.setName(customer.getName());
-        if(customer.getLastname() !=null)
-            newCustomer.setLastName(customer.getLastname());
+        if(customer.getLastName()!=null)
+            newCustomer.setLastName(customer.getLastName());
         if(customer.getUsername() !=null)
             newCustomer.setUsername(customer.getUsername());
         customerRepository.save(newCustomer);

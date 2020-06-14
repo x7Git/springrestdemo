@@ -4,8 +4,6 @@ import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,6 +66,6 @@ class CustomerServiceTest {
 
     @Test
     void updateCustomer_NoCustomerFound_throwsNoCustomerFoundException() {
-        assertThrows(NoEntityFoundException.class, () -> classUnderTest.updateCustomer(new CustomerDTO()));
+        assertThrows(NoEntityFoundException.class, () -> classUnderTest.updateCustomer(new Customer()));
     }
 }

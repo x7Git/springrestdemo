@@ -2,10 +2,8 @@ package com.example.springrestdemo.rest;
 
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerService;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class CustomerController {
     }
 
     @PutMapping("/" + CtxPath.CUSTOMER)
-    public ResponseEntity<String> putCustomer(@RequestBody CustomerDTO customer) {
+    public ResponseEntity<String> putCustomer(@RequestBody Customer customer) {
         customerService.updateCustomer(customer);
         return ResponseEntity.noContent().build();
     }

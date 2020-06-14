@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.springrestdemo.service.JwtUserDetailsService;
+import com.example.springrestdemo.service.CustomerDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	private Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
 	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService;
+	private CustomerDetailsService customerDetailsService;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -44,7 +44,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 
 		if (!username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			UserDetails userDetails = this.customerDetailsService.loadUserByUsername(username);
 			authenticateUser(userDetails, jwtToken, request);
 		}
 

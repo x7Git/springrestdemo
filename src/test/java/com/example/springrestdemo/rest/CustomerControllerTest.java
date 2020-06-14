@@ -3,8 +3,6 @@ package com.example.springrestdemo.rest;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.example.springrestdemo.service.CustomerService;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,12 +35,10 @@ class CustomerControllerTest {
 
     private static final long CUSTOMER_ID= 3489432L;
     private Customer customer;
-    private CustomerDTO customerDTO;
 
     @BeforeEach
     void setUp(){
         customer = new Customer("username" , "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
-        customerDTO = new CustomerDTO();
     }
 
     @Test
@@ -78,7 +74,7 @@ class CustomerControllerTest {
             MockHttpServletRequest request = new MockHttpServletRequest();
             RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
             //Act
-            ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customerDTO);
+            ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customer);
             //Assert
             assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }

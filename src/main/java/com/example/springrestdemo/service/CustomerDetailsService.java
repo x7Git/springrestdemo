@@ -2,7 +2,7 @@ package com.example.springrestdemo.service;
 
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.CustomerRepository;
-import com.example.springrestdemo.service.DTO.CustomerDTO;
+import com.example.springrestdemo.exception.error.NoEntityFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
+public class CustomerDetailsService implements UserDetailsService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
@@ -26,10 +26,9 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) {
 		String ROLE_PREFIX = "ROLE_";
-		Customer customer = customerRepository.findByUsername(username);
-		if (customer == null) {
-			throw new UsernameNotFoundException("User not found with username: " + username);
-		}
+		Customer customer = customerRepository.findByUsername(username)
+				.orElseThrow(() -> new NoEntityFoundException(username));
+
 		if (customer.getRole() != null) {
 			return new org.springframework.security.core.userdetails.User(customer.getUsername(), customer.getPassword(),
 					Collections.singleton(new SimpleGrantedAuthority(ROLE_PREFIX + customer.getRole())));
@@ -40,9 +39,8 @@ public class JwtUserDetailsService implements UserDetailsService {
 		}
 	}
 	
-	public Customer save(CustomerDTO customer) {
-		Customer newUser = new Customer(customer.getUsername(), customer.getName(), customer.getLastname(),
-				bcryptEncoder.encode(customer.getPassword()), customer.getRole());
-		return customerRepository.save(newUser);
+	public Customer save(Customer customer) {
+		customer.setPassword(bcryptEncoder.encode(customer.getPassword()));
+		return customerRepository.save(customer);
 	}
 }
