@@ -5,6 +5,7 @@ import com.example.springrestdemo.service.CustomerService;
 import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerService.getCustomerById(customerId));
     }
 
-    @GetMapping("/" + CtxPath.CUSTOMERS)
+   @GetMapping("/" + CtxPath.CUSTOMERS)
     public ResponseEntity<List<Customer>> getCustomers() {
         return ResponseEntity.ok().body(customerService.getCustomers());
     }

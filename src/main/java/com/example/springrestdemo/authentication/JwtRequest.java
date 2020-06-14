@@ -1,4 +1,4 @@
-package com.example.springrestdemo.jwt;
+package com.example.springrestdemo.authentication;
 
 import java.io.Serializable;
 

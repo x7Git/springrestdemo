@@ -1,6 +1,7 @@
 package com.example.springrestdemo.rest;
 
 import com.example.springrestdemo.db.entity.Customer;
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.example.springrestdemo.service.CustomerService;
 import com.example.springrestdemo.service.DTO.CustomerDTO;
 import org.junit.Before;
@@ -40,7 +41,7 @@ class CustomerControllerTest {
 
     @BeforeEach
     void setUp(){
-        customer = new Customer("username" , "Lokesh", "Gupta", "password");
+        customer = new Customer("username" , "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
         customerDTO = new CustomerDTO();
     }
 

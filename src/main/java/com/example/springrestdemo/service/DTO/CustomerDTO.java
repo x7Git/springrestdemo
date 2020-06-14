@@ -1,10 +1,21 @@
 package com.example.springrestdemo.service.DTO;
 
-public class CustomerDTO {
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
+
+public class CustomerDTO{
     private String username;
     private String password;
     private String name;
     private String lastname;
+    private RoleType role;
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;

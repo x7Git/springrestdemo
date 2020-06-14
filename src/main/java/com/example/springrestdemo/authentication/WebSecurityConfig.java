@@ -1,8 +1,11 @@
-package com.example.springrestdemo.jwt;
+package com.example.springrestdemo.authentication;
 
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
+import com.example.springrestdemo.rest.CtxPath;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.example.springrestdemo.rest.CtxPath.*;
 
 @Configuration
 @EnableWebSecurity
@@ -53,13 +58,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate", "/register", "/systemalive").permitAll().
+                .authorizeRequests().antMatchers("/"+ LOG_IN, "/" +SIGN_IN, "/" + SYSTEM_ALIVE).permitAll()
+                .antMatchers(HttpMethod.GET,"/"+ CUSTOMERS).hasRole(RoleType.SERVICE.name())
+               .antMatchers(HttpMethod.POST, "/" + CtxPath.CONTRACT + "/" + CtxPath.CUSTOMER_ID_BRACKETS).hasRole("SERVICE")
+                .antMatchers(HttpMethod.POST,"/" + CtxPath.CONTRACT ).hasRole("SERVICE")
                 // all other requests need to be authenticated
-                        anyRequest().authenticated().and().
+                        .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
-                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                        exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

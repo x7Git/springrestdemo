@@ -1,5 +1,6 @@
 package com.example.springrestdemo.db.entity;
 
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,11 +33,16 @@ public class Customer {
     @JsonIgnore
     private String password;
 
-    public Customer(String username, String name, String lastName, String password) {
+    @Column(name ="role")
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
+
+    public Customer(String username, String name, String lastName, String password, RoleType role) {
         this.username = username;
         this.name = name;
         this.lastName = lastName;
         this.password = password;
+        this.role = role;
     }
 
     public Customer() {
@@ -80,5 +86,13 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
     }
 }

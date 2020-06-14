@@ -1,6 +1,7 @@
 package com.example.springrestdemo.service;
 
 import com.example.springrestdemo.db.entity.Customer;
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
 import com.example.springrestdemo.service.DTO.CustomerDTO;
@@ -36,7 +37,7 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        customer = new Customer("username" , "Lokesh", "Gupta", "password");
+        customer = new Customer("username" , "Lokesh", "Gupta", "password", RoleType.SERVICE);
     }
 
     @Test

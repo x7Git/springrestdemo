@@ -1,9 +1,11 @@
 package com.example.springrestdemo.rest;
 
 import com.example.springrestdemo.db.entity.Contract;
+import com.example.springrestdemo.db.entity.enumeration.RoleType;
 import com.example.springrestdemo.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
