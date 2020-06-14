@@ -31,9 +31,6 @@ public class CustomerDetailsService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private CustomerDetailsService customerDetailsService;
-
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Override
@@ -59,8 +56,7 @@ public class CustomerDetailsService implements UserDetailsService {
     public JwtResponse authenticate(JwtRequest authenticationRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        final UserDetails userDetails = customerDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails userDetails = loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return new JwtResponse(token);
     }

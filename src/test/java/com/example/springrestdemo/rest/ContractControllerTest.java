@@ -62,4 +62,17 @@ class ContractControllerTest {
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }
+    @Test
+    void getPrice_calculatePrice_ok(){
+        //Arrange
+        long price = 7496L;
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        when(mockContractService.calculatePrice(CUSTOMER_ID)).thenReturn(price);
+        //Act
+        ResponseEntity<Long> responseEntity = classUnderTest.getPrice(CUSTOMER_ID);
+        //Assert
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+        assertThat(responseEntity.getBody()).isEqualTo(price);
+    }
 }

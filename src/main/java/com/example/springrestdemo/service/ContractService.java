@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ContractService {
-    private Customer customer;
 
     private final ContractRepository contractRepository;
     private final CustomerRepository customerRepository;
@@ -26,23 +25,24 @@ public class ContractService {
     }
 
     public Long addContract(Contract contract, long customerId) {
-        findCustomer(customerId);
-        contract.setCustomer(customer);
+        contract.setCustomer(findCustomer(customerId));
             contractRepository.save(contract);
             return contract.getContractId();
     }
 
     public Long calculatePrice(long customerId) {
-        findCustomer(customerId);
+        Customer customer = findCustomer(customerId);
         long calculatedPrice = 0L;
-        for(Contract contract : customer.getContracts()){
-            calculatedPrice += contract.getPrice();
+        if(customer.getContracts() != null) {
+            for (Contract contract : customer.getContracts()) {
+                calculatedPrice += contract.getPrice();
+            }
         }
         return calculatedPrice;
     }
 
-    protected void findCustomer (long customerId){
-        customer = customerRepository.findById(customerId)
+    protected Customer findCustomer (long customerId){
+        return customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoEntityFoundException(customerId));
     }
 

@@ -39,8 +39,6 @@ public class CustomerService {
             newCustomer.setName(customer.getName());
         if(customer.getLastName()!=null)
             newCustomer.setLastName(customer.getLastName());
-        if(customer.getUsername() !=null)
-            newCustomer.setUsername(customer.getUsername());
         customerRepository.save(newCustomer);
     }
 
@@ -48,4 +46,5 @@ public class CustomerService {
         customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoEntityFoundException(customerId));
     }
+
 }

@@ -77,6 +77,10 @@ public class Customer {
         this.lastName = lastName;
     }
 
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
     public List<Contract> getContracts() {
         return contracts;
     }

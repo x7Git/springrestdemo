@@ -8,4 +8,5 @@ public class NoEntityFoundException extends RuntimeException {
     public NoEntityFoundException(String username) {
         super( "No Entity Found for username: "+ username);
     }
+
 }

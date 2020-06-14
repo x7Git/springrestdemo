@@ -40,8 +40,11 @@ class CustomerServiceTest {
 
     @Test
     public void getCustomers() {
+        //Arrange
         when(mockCustomerRepository.findAll()).thenReturn(Collections.singletonList(new Customer()));
+        //Act
         List<Customer> result = classUnderTest.getCustomers();
+        //Assert
         assertThat(result).isNotEmpty();
     }
 
@@ -52,20 +55,48 @@ class CustomerServiceTest {
 
     @Test
     public void getCustomerById_CustomerFound_ok() {
+        //Arrange
         Customer customer = new Customer();
         when(mockCustomerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        //Act
         Customer result = classUnderTest.getCustomerById(CUSTOMER_ID);
+        //Assert
         assertEquals(customer, result);
     }
 
     @Test
-    void deleteCustomer() {
+    void deleteCustomer_CustomerDeleted_ok() {
+        //Act
         classUnderTest.deleteCustomer(CUSTOMER_ID);
+        //Assert
         verify(mockCustomerRepository).deleteById(CUSTOMER_ID);
     }
 
     @Test
     void updateCustomer_NoCustomerFound_throwsNoCustomerFoundException() {
         assertThrows(NoEntityFoundException.class, () -> classUnderTest.updateCustomer(new Customer()));
+    }
+
+    @Test
+    void updateCustomer_CustomerFound_ok() {
+        //Arrange
+        when(mockCustomerRepository.findByUsername(anyString())).thenReturn(Optional.of(customer));
+        customer.setName("Flip");
+        customer.setLastName("Natz");
+        //Act
+        classUnderTest.updateCustomer(customer);
+        //Assert
+        verify(mockCustomerRepository).save(customer);
+    }
+    @Test
+    void updateCustomer_NameAndLastNameNULL_ok() {
+        //Arrange
+        when(mockCustomerRepository.findByUsername(anyString())).thenReturn(Optional.of(customer));
+        customer.setName(null);
+        customer.setLastName(null);
+        //Act
+        classUnderTest.updateCustomer(customer);
+        //Assert
+        verify(mockCustomerRepository).save(customer);
     }
 }
