@@ -40,7 +40,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if(!jwtToken.isEmpty()) {
 			username = getUserName(jwtToken);
 		}else{
-			logger.info("No Token found for Header Authorization");
+			logger.info("No Token found for Header Authorization, " +
+					"Token has to start with Bearer and must not be empty");
 		}
 
 		if (!username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -64,7 +65,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 	private String getJwtToken(HttpServletRequest request){
 		String jwtToken = request.getHeader("Authorization");
-		return jwtToken != null ? jwtToken : "";
+		return jwtToken != null && jwtToken.startsWith("Bearer") ? jwtToken.substring(7) : "";
 	}
 
 	private String getUserName(String jwtToken){
