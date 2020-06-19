@@ -3,10 +3,16 @@ package com.example.springrestdemo.service;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
+import com.example.springrestdemo.rest.ContractController;
+import com.example.springrestdemo.rest.CustomerController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class CustomerService {
@@ -20,7 +26,16 @@ public class CustomerService {
     }
 
     public List<Customer> getCustomers(){
-        return customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
+        for (final Customer customer : customers) {
+            Link selfLink = linkTo(methodOn(CustomerController.class)
+                    .getCustomer(customer.getCustomerId())).withSelfRel();
+            customer.add(selfLink);
+            Link priceLink = linkTo(methodOn(ContractController.class)
+                    .getPrice(customer.getCustomerId())).withSelfRel();
+            customer.add(priceLink);
+        }
+        return customers;
     }
 
     public Customer getCustomerById(long customerId){
