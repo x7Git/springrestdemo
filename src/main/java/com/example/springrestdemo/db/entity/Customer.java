@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -20,23 +21,28 @@ public class Customer extends RepresentationModel<Customer>{
     @JsonIgnore
     private long customerId;
 
-    @Unique(message = "Peter")
-    @Column(name = "username")
-    @Size(min = 3, message = "Name must be at least 3 characters!")
+    @Unique(message = "Username must be unique")
+    @Column(name = "username", nullable = false)
+    @Size(min = 3, max = 25, message = "Username must be at least 3 and max 64 characters!")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String username;
 
     @Column(name ="name")
+    @Size(min = 3, max = 20, message = "Username must be at least 3 and max 20 characters!")
+    @Pattern(regexp = "^[a-zA-Z]+$")
     private String name;
 
     @Column(name ="lastname")
+    @Size(min = 3, max = 20, message = "Name must be at least 3 characters!")
+    @Pattern(regexp = "^[a-zA-Z]+$")
     private String lastName;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "customer")
     private List<Contract> contracts;
 
-    @Column(name ="password")
-    @Size(min = 5, message = "Password must be at least 5 characters!")
+    @Column(name ="password", nullable = false)
+    @Size(min = 5, max = 64, message = "Password must be at least 5 and max 64 characters!")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

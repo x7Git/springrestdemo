@@ -1,11 +1,14 @@
 package com.example.springrestdemo.authentication;
 
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.io.Serializable;
 
+@JsonDeserialize(using = JwtRequestDeserializer.class)
 public class JwtRequest implements Serializable {
 
 	private static final long serialVersionUID = 5926468583005150707L;
-	
 	private String username;
 	private String password;
 	
@@ -16,6 +19,7 @@ public class JwtRequest implements Serializable {
 	}
 
 	public JwtRequest(String username, String password) {
+
 		this.setUsername(username);
 		this.setPassword(password);
 	}
