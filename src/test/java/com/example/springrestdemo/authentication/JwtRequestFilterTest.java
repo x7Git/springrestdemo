@@ -32,6 +32,7 @@ class JwtRequestFilterTest {
     private JwtTokenUtil mockJwtTokenUtil;
     @InjectMocks
     private JwtRequestFilter classUnderTest;
+
     private MockHttpServletRequest request;
 
     @BeforeEach
@@ -90,6 +91,16 @@ class JwtRequestFilterTest {
     }
 
     @Test
+    void getUsername_UnableToGetToken_usernameIsEmpty() {
+        //Arrange
+        when(mockJwtTokenUtil.getUsernameFromToken(JWT_TOKEN)).thenThrow(IllegalArgumentException .class);
+        //Act
+        String username = classUnderTest.getUserName(JWT_TOKEN);
+        //Assert
+        assertThat(username).isEmpty();
+    }
+
+    @Test
     void doFilterInternal_authorized_ok() throws ServletException, IOException {
         //Arrange
         when(mockJwtTokenUtil.getUsernameFromToken(JWT_TOKEN)).thenReturn("username");
@@ -101,4 +112,12 @@ class JwtRequestFilterTest {
         //Assert
         verify(mockCustomerDetailsService).loadUserByUsername("username");
     }
+
+    @Test
+    void authenticateUser_validateToken_ok() {
+        //Arrange
+        when(mockJwtTokenUtil.validateToken(anyString(), any())).thenReturn(true);
+        //Act
+        classUnderTest.authenticateUser(mock(UserDetails.class), "Token", request);
+   }
 }

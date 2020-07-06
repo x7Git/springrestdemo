@@ -1,8 +1,8 @@
 package com.example.springrestdemo.exception.error;
 
-public class BusinessException extends RuntimeException {
+public class LengthInvalidException extends RuntimeException {
 
-    public BusinessException() {
+    public LengthInvalidException() {
         super( "Username or Password are to long");
     }
 

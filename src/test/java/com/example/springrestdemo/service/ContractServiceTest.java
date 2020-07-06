@@ -60,9 +60,9 @@ class ContractServiceTest {
     @Test
     void deleteCustomer_ContractDeleted_ok() {
         //Act
-        classUnderTest.deleteContract(contract);
+        classUnderTest.deleteContract(45L);
         //Assert
-        verify(mockContractRepository).delete(contract);
+        verify(mockContractRepository).deleteById(45L);
     }
 
     @Test

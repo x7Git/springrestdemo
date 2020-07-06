@@ -56,9 +56,8 @@ class ContractControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        Contract contract = new Contract(ContractType.DSL, PRICE);
         //Act
-        ResponseEntity<String> responseEntity = classUnderTest.deleteContract(contract);
+        ResponseEntity<String> responseEntity = classUnderTest.deleteContract(14L);
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }

@@ -20,8 +20,8 @@ public class ContractService {
         this.customerRepository = customerRepository;
     }
 
-    public void deleteContract(Contract contract) {
-        contractRepository.delete(contract);
+    public void deleteContract(long contractId) {
+        contractRepository.deleteById(contractId);
     }
 
     public Long addContract(Contract contract, long customerId) {

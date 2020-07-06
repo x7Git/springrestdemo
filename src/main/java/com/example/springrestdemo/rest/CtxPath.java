@@ -14,7 +14,8 @@ public class CtxPath {
     public static final String OPEN_API = "api-docs/**";
     public static final String SWAGGER_UI = "swagger-ui/**";
     public static final String SWAGGER_HTML = "swagger.html";
-
+    public static final String CONTRACT_ID_BRACKETS = "{contractId}";
+    public static final String CONTRACT_ID = "contractId";
     private CtxPath() {
     }
 }

@@ -1,6 +1,6 @@
 package com.example.springrestdemo.exception;
 
-import com.example.springrestdemo.exception.error.BusinessException;
+import com.example.springrestdemo.exception.error.LengthInvalidException;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.slf4j.Logger;
@@ -23,8 +23,8 @@ public class RestExceptionHandler {
         return error(NOT_FOUND, e);
     }
 
-    @ExceptionHandler({BusinessException.class})
-    public ResponseEntity<String> handleBusinessException(BusinessException e) {
+    @ExceptionHandler({LengthInvalidException.class})
+    public ResponseEntity<String> handleLengthInvalidException(LengthInvalidException e) {
         return error(NOT_ACCEPTABLE, e);
     }
 

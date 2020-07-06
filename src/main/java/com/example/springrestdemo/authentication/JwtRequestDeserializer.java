@@ -1,9 +1,8 @@
 package com.example.springrestdemo.authentication;
 
-import com.example.springrestdemo.exception.error.BusinessException;
-import com.example.springrestdemo.exception.error.NoEntityFoundException;
+import com.example.springrestdemo.exception.error.CharacterInvalidException;
+import com.example.springrestdemo.exception.error.LengthInvalidException;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -31,8 +30,11 @@ public class JwtRequestDeserializer extends StdDeserializer<JwtRequest> {
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
         Matcher matcherUsername = pattern.matcher(username);
 
-        if(username.length() > 25 ||  password.length() > 64 || !matcherUsername.find()){
-            throw new BusinessException();
+        if(username.length() > 25 ||  password.length() > 64){
+            throw new LengthInvalidException();
+        }
+        if(!matcherUsername.find()){
+            throw new CharacterInvalidException();
         }
         return new JwtRequest(username, password);
     }
