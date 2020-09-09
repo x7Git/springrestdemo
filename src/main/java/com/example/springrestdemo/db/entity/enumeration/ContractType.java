@@ -5,9 +5,7 @@ public enum ContractType {
     MOBILE("mobile"),
     IPTV("iptv");
 
-    private String name;
     ContractType(String name){
-        this.name = name;
     }
 
 }

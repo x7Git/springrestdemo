@@ -19,6 +19,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,7 +67,7 @@ class AuthenticationControllerTest {
         //Act
         ResponseEntity<?> responseEntity = classUnderTest.postCustomer(customer);
         //Assert
-        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        assertThat(responseEntity.getBody()).isEqualTo(customer);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        assertThat(responseEntity.getHeaders().get("Location")).isNotNull();
     }
 }

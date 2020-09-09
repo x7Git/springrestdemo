@@ -52,9 +52,9 @@ class ContractServiceTest {
         //Arrange
         when(mockCustomerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         //Act
-        long result = classUnderTest.addContract(contract, CUSTOMER_ID);
+        Contract result = classUnderTest.addContract(contract, CUSTOMER_ID);
         //Assert
-        assertThat(result).isEqualTo(contract.getCustomer().getCustomerId());
+        assertThat(result.getContractId()).isEqualTo(contract.getCustomer().getCustomerId());
     }
 
     @Test

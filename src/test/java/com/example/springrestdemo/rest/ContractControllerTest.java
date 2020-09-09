@@ -17,6 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,12 +44,12 @@ class ContractControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        when(mockContractService.addContract(contract, CUSTOMER_ID)).thenReturn(2L);
+        when(mockContractService.addContract(contract, CUSTOMER_ID)).thenReturn(mock(Contract.class));
         //Act
         ResponseEntity<Long> responseEntity = classUnderTest.postContract(contract, CUSTOMER_ID);
         //Assert
-        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        assertThat(responseEntity.getBody()).isEqualTo(2);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
+        assertThat(responseEntity.getHeaders().get("Location")).isNotNull();
     }
 
     @Test

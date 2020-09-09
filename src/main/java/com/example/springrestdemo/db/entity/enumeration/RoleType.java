@@ -5,8 +5,6 @@ public enum RoleType {
     CUSTOMER("CUSTOMER"),
     SERVICE("SERVICE");
 
-    private String name;
     RoleType(String name){
-        this.name = name;
     }
 }

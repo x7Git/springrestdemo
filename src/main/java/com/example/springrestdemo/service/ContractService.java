@@ -24,10 +24,10 @@ public class ContractService {
         contractRepository.deleteById(contractId);
     }
 
-    public Long addContract(Contract contract, long customerId) {
+    public Contract addContract(Contract contract, long customerId) {
         contract.setCustomer(findCustomer(customerId));
             contractRepository.save(contract);
-            return contract.getContractId();
+            return contract;
     }
 
     public Long calculatePrice(long customerId) {

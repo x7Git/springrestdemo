@@ -5,6 +5,7 @@ import com.example.springrestdemo.authentication.JwtResponse;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @CrossOrigin
@@ -31,6 +35,9 @@ public class AuthenticationController {
 
     @PostMapping("/" + CtxPath.SIGN_IN)
     public ResponseEntity<?> postCustomer(@Valid @RequestBody Customer user) {
-        return ResponseEntity.ok(customerDetailsService.addCustomer(user));
+        Customer customer = customerDetailsService.addCustomer(user);
+        Link selfLink = linkTo(methodOn(CustomerController.class)
+                .getCustomer(customer.getCustomerId())).withSelfRel();
+        return ResponseEntity.created(selfLink.toUri()).build();
     }
 }

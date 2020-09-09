@@ -3,8 +3,12 @@ package com.example.springrestdemo.rest;
 import com.example.springrestdemo.db.entity.Contract;
 import com.example.springrestdemo.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class ContractController {
@@ -18,7 +22,10 @@ public class ContractController {
 
     @PostMapping("/" + CtxPath.CONTRACT + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
     public ResponseEntity<Long> postContract(@RequestBody Contract contract, @PathVariable("customerId") long customerId) {
-        return ResponseEntity.ok().body(contractService.addContract(contract, customerId));
+        Contract contractResult = contractService.addContract(contract, customerId);
+        Link selfLink = linkTo(methodOn(CustomerController.class)
+                .getCustomer(contractResult.getContractId())).withSelfRel();
+        return ResponseEntity.created(selfLink.toUri()).build();
     }
 
     @DeleteMapping("/" + CtxPath.CONTRACT + "/" + CtxPath.CONTRACT_ID_BRACKETS)
