@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: springrestdemo
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        healthCheckPath: /systemalive
+        healthCheckInterval: 20s
+        enabled: true
+        instanceId: ${spring.application.name}:${random.value}
+
+server:
+  port: 9090

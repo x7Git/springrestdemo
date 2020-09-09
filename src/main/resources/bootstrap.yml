@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: springrestdemo
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      config:
+        enabled: false
