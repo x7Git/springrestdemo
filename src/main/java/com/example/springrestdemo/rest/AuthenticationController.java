@@ -34,9 +34,9 @@ public class AuthenticationController {
 
     @PostMapping("/" + CtxPath.SIGN_IN)
     public ResponseEntity<?> postCustomer(@Valid @RequestBody Customer user) {
-        var customer = customerDetailsService.addCustomer(user);
+        customerDetailsService.addCustomer(user);
         var selfLink = linkTo(methodOn(CustomerController.class)
-                .getCustomer(customer.getCustomerId())).withSelfRel();
+                .getCustomer("")).withSelfRel();
         return ResponseEntity.created(selfLink.toUri()).build();
     }
 }

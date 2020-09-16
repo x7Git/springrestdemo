@@ -1,5 +1,6 @@
 package com.example.springrestdemo.service;
 
+import com.example.springrestdemo.authentication.JwtTokenUtil;
 import com.example.springrestdemo.db.entity.Contract;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.ContractRepository;
@@ -13,11 +14,13 @@ public class ContractService {
 
     private final ContractRepository contractRepository;
     private final CustomerRepository customerRepository;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public ContractService(ContractRepository contractRepository, CustomerRepository customerRepository) {
+    public ContractService(ContractRepository contractRepository, CustomerRepository customerRepository, JwtTokenUtil jwtTokenUtil) {
         this.contractRepository = contractRepository;
         this.customerRepository = customerRepository;
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     public void deleteContract(long contractId) {
@@ -28,6 +31,19 @@ public class ContractService {
         contract.setCustomer(findCustomer(customerId));
         contractRepository.save(contract);
         return contract;
+    }
+
+    public long calculatePrice(String jwtToken) {
+        var jwtTokenWithOutPrefix = jwtToken != null && jwtToken.startsWith("Bearer") ? jwtToken.substring(7) : "";
+        String username = jwtTokenUtil.getUsernameFromToken(jwtTokenWithOutPrefix);
+        var customer = customerRepository.findByUsername(username).orElseThrow(() -> new NoEntityFoundException(username));
+        var calculatedPrice = 0L;
+        if (customer.getContracts() != null) {
+            for (Contract contract : customer) {
+                calculatedPrice += contract.getPrice();
+            }
+        }
+        return calculatedPrice;
     }
 
     public long calculatePrice(long customerId) {

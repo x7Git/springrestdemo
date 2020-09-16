@@ -11,7 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
 public class RestExceptionHandler {
@@ -25,7 +26,7 @@ public class RestExceptionHandler {
 
     @ExceptionHandler({LengthInvalidException.class})
     public ResponseEntity<ExceptionInfo> handleLengthInvalidException(LengthInvalidException e) {
-        return error(NOT_ACCEPTABLE, ExceptionInfo.from(e), e);
+        return error(BAD_REQUEST, ExceptionInfo.from(e), e);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})

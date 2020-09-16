@@ -20,12 +20,13 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class CustomerControllerTest {
+    private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
 
     @Mock
     private CustomerService mockCustomerService;
@@ -60,9 +61,9 @@ class CustomerControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(mockCustomerService.getCustomerById(anyLong())).thenReturn(customer);
+        when(mockCustomerService.getCustomerByName(anyString())).thenReturn(customer);
         //Act
-        ResponseEntity<Customer> responseEntity = classUnderTest.getCustomer(234L);
+        ResponseEntity<Customer> responseEntity = classUnderTest.getCustomer(JWT_TOKEN_BEARER);
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
         assertThat(responseEntity.getBody()).isEqualTo(customer);

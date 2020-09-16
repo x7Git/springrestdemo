@@ -1,5 +1,6 @@
 package com.example.springrestdemo.service;
 
+import com.example.springrestdemo.authentication.JwtTokenUtil;
 import com.example.springrestdemo.db.entity.Contract;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.entity.enumeration.ContractType;
@@ -22,6 +23,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,12 +34,15 @@ class ContractServiceTest {
     private ContractRepository mockContractRepository;
     @Mock
     private CustomerRepository mockCustomerRepository;
+    private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
 
     @InjectMocks
     private ContractService classUnderTest;
-    
-    private static final long CUSTOMER_ID= 3489432L;
+    private static final String USERNAME = "username";
+    private static final long CUSTOMER_ID = 3489432L;
     private static final long PRICE = 1599L;
+    @Mock
+    private JwtTokenUtil mockJwtTokenUtil;
     private Contract contract;
     private Customer customer;
 
@@ -46,6 +51,7 @@ class ContractServiceTest {
         contract = new Contract(ContractType.DSL, PRICE);
         customer = new Customer();
     }
+
     @Ignore
     @Test
     void addContract_ContractAdded_ok() {
@@ -68,9 +74,10 @@ class ContractServiceTest {
     @Test
     void calculatePrice_noContracts_ok() {
         //Arrange
-        when(mockCustomerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        when(mockJwtTokenUtil.getUsernameFromToken(anyString())).thenReturn(USERNAME);
+        when(mockCustomerRepository.findByUsername(USERNAME)).thenReturn(Optional.of(customer));
         //Act
-        long calculatePrice = classUnderTest.calculatePrice(CUSTOMER_ID);
+        long calculatePrice = classUnderTest.calculatePrice(JWT_TOKEN_BEARER);
         //Assert
         assertThat(calculatePrice).isEqualTo(0L);
     }
@@ -79,15 +86,16 @@ class ContractServiceTest {
     @Test
     void calculatePrice_twoContracts_ok() {
         //Arrange
-        when(mockCustomerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        when(mockJwtTokenUtil.getUsernameFromToken(anyString())).thenReturn(USERNAME);
+        when(mockCustomerRepository.findByUsername(USERNAME)).thenReturn(Optional.of(customer));
         List<Contract> contracts = new ArrayList<>();
         contracts.add(new Contract(ContractType.DSL, 799L));
         contracts.add(new Contract(ContractType.DSL, 1599L));
         customer.setContracts(contracts);
         //Act
-        long calculatePrice = classUnderTest.calculatePrice(CUSTOMER_ID);
+        long calculatePrice = classUnderTest.calculatePrice(JWT_TOKEN_BEARER);
         //Assert
-        assertThat(calculatePrice).isEqualTo(799L+1599L);
+        assertThat(calculatePrice).isEqualTo(799L + 1599L);
     }
 
     @Test

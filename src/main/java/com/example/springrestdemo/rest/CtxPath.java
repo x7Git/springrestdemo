@@ -6,8 +6,7 @@ public final class CtxPath {
 
     public static final String CUSTOMER_ID = "customerId";
     public static final String CUSTOMER_ID_BRACKETS = "{customerId}";
-    public static final String CONTRACT = "contract";
-    public static final String CUSTOMER = "customer";
+    public static final String CONTRACTS = "contracts";
     public static final String CUSTOMERS = "customers";
     public static final String CALCULATE_PRICE = "calculateprice";
     public static final String SYSTEM_ALIVE = "systemalive";
@@ -18,7 +17,7 @@ public final class CtxPath {
     public static final String SWAGGER_HTML = "swagger.html";
     public static final String CONTRACT_ID_BRACKETS = "{contractId}";
     public static final String CONTRACT_ID = "contractId";
-    public static final List<String> PATHS_WITHOUT_AUTHENTICATION = List.of("/"+LOG_IN, "/"+ OPEN_API, "/"+SYSTEM_ALIVE, "/"+ SWAGGER_HTML, "/"+SWAGGER_UI);
+    public static final List<String> PATHS_WITHOUT_AUTHENTICATION = List.of("/" + LOG_IN, "/" + SIGN_IN, "/" + OPEN_API, "/" + SYSTEM_ALIVE, "/" + SWAGGER_HTML, "/" + SWAGGER_UI);
 
     private CtxPath() {
         // for noninstanibilty

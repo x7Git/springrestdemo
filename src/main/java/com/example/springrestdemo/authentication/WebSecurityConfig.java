@@ -1,12 +1,9 @@
 package com.example.springrestdemo.authentication;
 
-import com.example.springrestdemo.db.entity.enumeration.RoleType;
-import com.example.springrestdemo.rest.CtxPath;
 import com.example.springrestdemo.service.CustomerDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,7 +19,7 @@ import static com.example.springrestdemo.rest.CtxPath.*;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -59,9 +56,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/"+ LOG_IN, "/" +SIGN_IN, "/" + SYSTEM_ALIVE, "/" + OPEN_API, "/"+ SWAGGER_UI, "/"+ SWAGGER_HTML).permitAll()
-                .antMatchers(HttpMethod.GET,"/"+ CUSTOMERS).hasRole(RoleType.SERVICE.name())
-               .antMatchers(HttpMethod.POST, "/" + CtxPath.CONTRACT + "/" + CtxPath.CUSTOMER_ID_BRACKETS).hasRole("SERVICE")
-                .antMatchers(HttpMethod.POST,"/" + CtxPath.CONTRACT ).hasRole("SERVICE")
                 // all other requests need to be authenticated
                         .anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to store user's state.

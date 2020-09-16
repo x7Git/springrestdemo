@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class ContractControllerTest {
-
+    private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
     @Mock
     private ContractService mockContractService;
 
@@ -68,9 +68,9 @@ class ContractControllerTest {
         long price = 7496L;
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(mockContractService.calculatePrice(CUSTOMER_ID)).thenReturn(price);
+        when(mockContractService.calculatePrice(JWT_TOKEN_BEARER)).thenReturn(price);
         //Act
-        ResponseEntity<Long> responseEntity = classUnderTest.getPrice(CUSTOMER_ID);
+        ResponseEntity<Long> responseEntity = classUnderTest.getPrice(JWT_TOKEN_BEARER);
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
         assertThat(responseEntity.getBody()).isEqualTo(price);

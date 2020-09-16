@@ -10,12 +10,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,15 +38,18 @@ class RestExceptionHandlerTest {
         //Act
         ResponseEntity<?>  result = classUnderTest.handleLengthInvalidException(mock(LengthInvalidException.class));
         //Assert
-        assertThat(result.getStatusCode()).isEqualTo(NOT_ACCEPTABLE);
+        assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
     @Test
     void handleMethodArgumentNotValidException() {
+        //Arrange
+        MethodArgumentNotValidException mockMethodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
+        when(mockMethodArgumentNotValidException.getBindingResult()).thenReturn(mock(BindingResult.class));
         //Act
-        ResponseEntity<?>  result = classUnderTest.handleMethodArgumentNotValidException(mock(MethodArgumentNotValidException.class));
+        ResponseEntity<?> result = classUnderTest.handleMethodArgumentNotValidException(mockMethodArgumentNotValidException);
         //Assert
-        assertThat(result.getStatusCode()).isEqualTo(NOT_ACCEPTABLE);
+        assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 
     @Test
@@ -53,6 +57,6 @@ class RestExceptionHandlerTest {
         //Act
         ResponseEntity<?>  result = classUnderTest.handleInvalidFormatException(mock(InvalidFormatException.class));
         //Assert
-        assertThat(result.getStatusCode()).isEqualTo(NOT_ACCEPTABLE);
+        assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
 }
