@@ -26,22 +26,22 @@ public class ContractService {
 
     public Contract addContract(Contract contract, long customerId) {
         contract.setCustomer(findCustomer(customerId));
-            contractRepository.save(contract);
-            return contract;
+        contractRepository.save(contract);
+        return contract;
     }
 
-    public Long calculatePrice(long customerId) {
-        Customer customer = findCustomer(customerId);
-        long calculatedPrice = 0L;
-        if(customer.getContracts() != null) {
-            for (Contract contract : customer.getContracts()) {
+    public long calculatePrice(long customerId) {
+        var customer = findCustomer(customerId);
+        var calculatedPrice = 0L;
+        if (customer.getContracts() != null) {
+            for (Contract contract : customer) {
                 calculatedPrice += contract.getPrice();
             }
         }
         return calculatedPrice;
     }
 
-    protected Customer findCustomer (long customerId){
+    protected Customer findCustomer(long customerId) {
         return customerRepository.findById(customerId)
                 .orElseThrow(() -> new NoEntityFoundException(customerId));
     }

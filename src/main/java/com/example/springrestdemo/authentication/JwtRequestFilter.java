@@ -1,13 +1,11 @@
 package com.example.springrestdemo.authentication;
 
-import com.example.springrestdemo.rest.CtxPath;
 import com.example.springrestdemo.service.CustomerDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,8 +36,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         if (!PATHS_WITHOUT_AUTHENTICATION.contains(request.getRequestURI())) {
 
-        	String jwtToken = getJwtToken(request);
-            String username = "";
+            var jwtToken = getJwtToken(request);
+            var username = "";
 
             if (!jwtToken.isEmpty()) {
                 username = getUserName(jwtToken);
@@ -69,12 +67,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     protected String getJwtToken(HttpServletRequest request) {
-        String jwtToken = request.getHeader("Authorization");
+        var jwtToken = request.getHeader("Authorization");
         return jwtToken != null && jwtToken.startsWith("Bearer") ? jwtToken.substring(7) : "";
     }
 
     protected String getUserName(String jwtToken) {
-        String username = "";
+        var username = "";
         try {
             username = jwtTokenUtil.getUsernameFromToken(jwtToken);
         } catch (IllegalArgumentException e) {

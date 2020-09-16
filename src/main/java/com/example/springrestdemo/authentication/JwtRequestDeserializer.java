@@ -24,16 +24,16 @@ public class JwtRequestDeserializer extends StdDeserializer<JwtRequest> {
     @Override
     public JwtRequest deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode node = jp.getCodec().readTree(jp);
-        String username = node.get("username").asText();
-        String password = node.get("password").asText();
+        var username = node.get("username").asText();
+        var password = node.get("password").asText();
 
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]+$");
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]");
         Matcher matcherUsername = pattern.matcher(username);
 
-        if(username.length() > 25 ||  password.length() > 64){
+        if (username.length() > 25 || username.length() < 2 || password.length() > 64 || password.length() < 5) {
             throw new LengthInvalidException();
         }
-        if(!matcherUsername.find()){
+        if (!matcherUsername.find()) {
             throw new CharacterInvalidException();
         }
         return new JwtRequest(username, password);

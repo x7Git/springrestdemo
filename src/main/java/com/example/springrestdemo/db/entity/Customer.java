@@ -10,43 +10,44 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
 @Table(name = "customer")
-public class Customer extends RepresentationModel<Customer>{
+public class Customer extends RepresentationModel<Customer> implements Iterable<Contract> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "customer_id")
     @JsonIgnore
     private long customerId;
 
-    @Unique(message = "Username must be unique")
+    @Unique(message = "{account.username.unique}")
     @Column(name = "username", nullable = false)
-    @Size(min = 3, max = 25, message = "Username must be at least 3 and max 64 characters!")
-    @Pattern(regexp = "^[a-zA-Z0-9]+$")
+    @Size(min = 3, max = 25, message = "{account.username.size }")
+    @Pattern(regexp = "[a-zA-Z0-9]+")
     private String username;
 
-    @Column(name ="name")
-    @Size(min = 3, max = 20, message = "Username must be at least 3 and max 20 characters!")
-    @Pattern(regexp = "^[a-zA-Z]+$")
+    @Column(name = "name")
+    @Size(min = 2, max = 20, message = "{account.name.size}")
+    @Pattern(regexp = "[A-Z][a-z]+")
     private String name;
 
-    @Column(name ="lastname")
-    @Size(min = 3, max = 20, message = "Name must be at least 3 characters!")
-    @Pattern(regexp = "^[a-zA-Z]+$")
+    @Column(name = "lastname")
+    @Size(min = 2, max = 20, message = "{account.lastname.size")
+    @Pattern(regexp = "[A-ZÄÖÜ][a-zäöü]+")
     private String lastName;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "customer")
     private List<Contract> contracts;
 
-    @Column(name ="password", nullable = false)
-    @Size(min = 5, max = 64, message = "Password must be at least 5 and max 64 characters!")
+    @Column(name = "password", nullable = false)
+    @Size(min = 5, max = 64, message = "{account.password.size}")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name ="role")
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
@@ -111,5 +112,10 @@ public class Customer extends RepresentationModel<Customer>{
 
     public void setRole(RoleType role) {
         this.role = role;
+    }
+
+    @Override
+    public Iterator<Contract> iterator() {
+        return contracts.iterator();
     }
 }

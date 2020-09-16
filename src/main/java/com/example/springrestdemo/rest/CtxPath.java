@@ -1,6 +1,5 @@
 package com.example.springrestdemo.rest;
 
-import java.util.Arrays;
 import java.util.List;
 
 public final class CtxPath {
@@ -20,6 +19,7 @@ public final class CtxPath {
     public static final String CONTRACT_ID_BRACKETS = "{contractId}";
     public static final String CONTRACT_ID = "contractId";
     public static final List<String> PATHS_WITHOUT_AUTHENTICATION = List.of("/"+LOG_IN, "/"+ OPEN_API, "/"+SYSTEM_ALIVE, "/"+ SWAGGER_HTML, "/"+SWAGGER_UI);
+
     private CtxPath() {
         // for noninstanibilty
         throw new AssertionError();

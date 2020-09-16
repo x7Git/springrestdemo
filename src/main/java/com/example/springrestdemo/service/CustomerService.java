@@ -1,7 +1,7 @@
 package com.example.springrestdemo.service;
 
-import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.db.entity.Customer;
+import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
 import com.example.springrestdemo.rest.ContractController;
 import com.example.springrestdemo.rest.CustomerController;
@@ -48,7 +48,7 @@ public class CustomerService {
     }
 
     public void updateCustomer(Customer customer){
-        Customer newCustomer = customerRepository.findByUsername(customer.getUsername())
+        var newCustomer = customerRepository.findByUsername(customer.getUsername())
                 .orElseThrow(() -> new NoEntityFoundException(customer.getUsername()));
         if(customer.getName() !=null)
             newCustomer.setName(customer.getName());

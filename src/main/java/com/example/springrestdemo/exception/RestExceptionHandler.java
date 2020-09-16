@@ -19,23 +19,24 @@ public class RestExceptionHandler {
     Logger logger = LoggerFactory.getLogger(RestExceptionHandler.class);
 
     @ExceptionHandler({NoEntityFoundException.class})
-    public ResponseEntity<String> handleNotFoundException(NoEntityFoundException e) {
-        return error(NOT_FOUND, e);
+    public ResponseEntity<ExceptionInfo> handleNotFoundException(NoEntityFoundException e) {
+        return error(NOT_FOUND, ExceptionInfo.from(e), e);
     }
 
     @ExceptionHandler({LengthInvalidException.class})
-    public ResponseEntity<String> handleLengthInvalidException(LengthInvalidException e) {
-        return error(NOT_ACCEPTABLE, e);
+    public ResponseEntity<ExceptionInfo> handleLengthInvalidException(LengthInvalidException e) {
+        return error(NOT_ACCEPTABLE, ExceptionInfo.from(e), e);
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        return error(NOT_ACCEPTABLE, e, "JSON parse error: Cannot deserialize value");
+    public ResponseEntity<ExceptionInfo> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+
+        return error(BAD_REQUEST, ExceptionInfo.from(e), e);
     }
 
     @ExceptionHandler({InvalidFormatException.class})
-    public ResponseEntity<String> handleInvalidFormatException(InvalidFormatException e) {
-        return error(NOT_ACCEPTABLE, e, "InvalidFormatException: Cannot deserialize value");
+    public ResponseEntity<ExceptionInfo> handleInvalidFormatException(InvalidFormatException e) {
+        return error(BAD_REQUEST, ExceptionInfo.from(e), e);
     }
 
 /*    @ExceptionHandler({Exception.class})
@@ -43,12 +44,10 @@ public class RestExceptionHandler {
         return error(INTERNAL_SERVER_ERROR, e);
     }*/
 
-    private ResponseEntity<String> error(HttpStatus status, Exception e, String message) {
+    private ResponseEntity<ExceptionInfo> error(HttpStatus status, ExceptionInfo exceptionInfo, Exception e) {
         e.printStackTrace();
         logger.error(e.getMessage());
-        return ResponseEntity.status(status).body(message);
+        return ResponseEntity.status(status).body(exceptionInfo);
     }
-    private ResponseEntity<String> error(HttpStatus status, Exception e) {
-       return error(status, e, e.getMessage());
-    }
+
 }

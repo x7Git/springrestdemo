@@ -35,8 +35,8 @@ public class CustomerDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        String ROLE_PREFIX = "ROLE_";
-        Customer customer = customerRepository.findByUsername(username)
+        var ROLE_PREFIX = "ROLE_";
+        var customer = customerRepository.findByUsername(username)
                 .orElseThrow(() -> new NoEntityFoundException(username));
 
         List<SimpleGrantedAuthority> simpleGrantedAuthorityList = new ArrayList<>();
@@ -56,8 +56,8 @@ public class CustomerDetailsService implements UserDetailsService {
     public JwtResponse authenticate(JwtRequest authenticationRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        final UserDetails userDetails = loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
+        final var userDetails = loadUserByUsername(authenticationRequest.getUsername());
+        final var token = jwtTokenUtil.generateToken(userDetails);
         return new JwtResponse(token);
     }
 }

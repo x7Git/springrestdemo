@@ -3,7 +3,6 @@ package com.example.springrestdemo.rest;
 import com.example.springrestdemo.db.entity.Contract;
 import com.example.springrestdemo.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +21,8 @@ public class ContractController {
 
     @PostMapping("/" + CtxPath.CONTRACT + "/" + CtxPath.CUSTOMER_ID_BRACKETS)
     public ResponseEntity<Long> postContract(@RequestBody Contract contract, @PathVariable("customerId") long customerId) {
-        Contract contractResult = contractService.addContract(contract, customerId);
-        Link selfLink = linkTo(methodOn(CustomerController.class)
+        var contractResult = contractService.addContract(contract, customerId);
+        var selfLink = linkTo(methodOn(CustomerController.class)
                 .getCustomer(contractResult.getContractId())).withSelfRel();
         return ResponseEntity.created(selfLink.toUri()).build();
     }

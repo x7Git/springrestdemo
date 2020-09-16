@@ -5,5 +5,9 @@ spring:
     consul:
       host: localhost
       port: 8500
-      config:
-        enabled: false
+    config:
+      discovery:
+        enabled: true
+        service-id: config
+      username: user
+      password: password
