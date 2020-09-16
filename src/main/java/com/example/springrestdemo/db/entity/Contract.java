@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 
 @Entity
 @Table(name = "contract")
@@ -26,7 +27,8 @@ public class Contract {
     private Customer customer;
 
     @Column(name = "price")
-    @Pattern(regexp = "^[0-9]*$")
+    @Pattern(regexp = "[0-9]+")
+    @PositiveOrZero(message = "{contract.price.positiveorzero}")
     private Long price;
 
     public Contract(ContractType contractType, Long price) {
