@@ -6,10 +6,7 @@ import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -39,4 +36,11 @@ public class AuthenticationController {
                 .getCustomer("")).withSelfRel();
         return ResponseEntity.created(selfLink.toUri()).build();
     }
+
+    @PutMapping
+    public ResponseEntity<?> changePassword(@RequestBody JwtRequest changePasswordRequest) {
+        return ResponseEntity.noContent().build();
+
+    }
+
 }

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "contract")
@@ -30,6 +32,12 @@ public class Contract {
     @Pattern(regexp = "[0-9]+")
     @PositiveOrZero(message = "{contract.price.positiveorzero}")
     private Long price;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime creationDateTime;
+
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastUpdateDateTime;
 
     public Contract(ContractType contractType, Long price) {
         this.contractType = contractType;
@@ -64,5 +72,28 @@ public class Contract {
 
     public void setPrice(Long price) {
         this.price = price;
+    }
+
+    @PrePersist
+    public void touchForCreate() {
+        creationDateTime = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void touchForUpdate() {
+        lastUpdateDateTime = LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contract contract = (Contract) o;
+        return contractId == contract.contractId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contractId);
     }
 }

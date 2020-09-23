@@ -10,8 +10,10 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "customer")
@@ -50,6 +52,12 @@ public class Customer extends RepresentationModel<Customer> implements Iterable<
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private RoleType role;
+
+    @Column(name = "created_date", nullable = false, updatable = false)
+    private LocalDateTime creationDateTime;
+
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastUpdateDateTime;
 
     public Customer(String username, String name, String lastName, String password, RoleType role) {
         this.username = username;
@@ -114,8 +122,32 @@ public class Customer extends RepresentationModel<Customer> implements Iterable<
         this.role = role;
     }
 
+    @PrePersist
+    public void touchForCreate() {
+        creationDateTime = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void touchForUpdate() {
+        lastUpdateDateTime = LocalDateTime.now();
+    }
+
     @Override
     public Iterator<Contract> iterator() {
         return contracts.iterator();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Customer contracts = (Customer) o;
+        return username.equals(contracts.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customerId);
     }
 }

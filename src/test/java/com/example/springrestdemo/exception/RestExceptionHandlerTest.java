@@ -28,7 +28,7 @@ class RestExceptionHandlerTest {
     @Test
     void handleNotFoundException() {
         //Act
-        ResponseEntity<?> result = classUnderTest.handleNotFoundException(mock(NoEntityFoundException.class));
+        ResponseEntity<?> result = classUnderTest.handleException(mock(NoEntityFoundException.class));
         //Assert
         assertThat(result.getStatusCode()).isEqualTo(NOT_FOUND);
     }
@@ -36,7 +36,7 @@ class RestExceptionHandlerTest {
     @Test
     void handleLengthInvalidException() {
         //Act
-        ResponseEntity<?>  result = classUnderTest.handleLengthInvalidException(mock(LengthInvalidException.class));
+        ResponseEntity<?> result = classUnderTest.handleException(mock(LengthInvalidException.class));
         //Assert
         assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
@@ -47,7 +47,7 @@ class RestExceptionHandlerTest {
         MethodArgumentNotValidException mockMethodArgumentNotValidException = mock(MethodArgumentNotValidException.class);
         when(mockMethodArgumentNotValidException.getBindingResult()).thenReturn(mock(BindingResult.class));
         //Act
-        ResponseEntity<?> result = classUnderTest.handleMethodArgumentNotValidException(mockMethodArgumentNotValidException);
+        ResponseEntity<?> result = classUnderTest.handleException(mockMethodArgumentNotValidException);
         //Assert
         assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
@@ -55,7 +55,7 @@ class RestExceptionHandlerTest {
     @Test
     void handleInvalidFormatException() {
         //Act
-        ResponseEntity<?>  result = classUnderTest.handleInvalidFormatException(mock(InvalidFormatException.class));
+        ResponseEntity<?> result = classUnderTest.handleException(mock(InvalidFormatException.class));
         //Assert
         assertThat(result.getStatusCode()).isEqualTo(BAD_REQUEST);
     }
