@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 
 public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
-    CustomerRepository customerRepository;
+    private CustomerRepository customerRepository;
 
     public UniqueValidator(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
@@ -20,6 +20,6 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        return s != null && !customerRepository.findByUsername(s).isPresent();
+        return s != null && customerRepository.findByUsername(s).isEmpty();
     }
 }

@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
-    String message() default "Scheiße";
+    String message() default "Username is already in use";
 
     Class<?>[] groups() default {};
 

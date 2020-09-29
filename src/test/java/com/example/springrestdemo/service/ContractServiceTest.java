@@ -17,10 +17,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.springrestdemo.TestValues.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -30,24 +30,22 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class ContractServiceTest {
-    private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
-    private static final String USERNAME = "username";
-    private static final long CUSTOMER_ID = 3489432L;
-    private static final long PRICE = 1599L;
+
     @Mock
     private ContractRepository mockContractRepository;
     @Mock
     private CustomerRepository mockCustomerRepository;
-    @InjectMocks
-    private ContractService classUnderTest;
     @Mock
     private JwtTokenUtil mockJwtTokenUtil;
+    @InjectMocks
+    private ContractService classUnderTest;
+
     private Contract contract;
     private Customer customer;
 
     @BeforeEach
     void setUp() {
-        contract = new Contract(ContractType.DSL, PRICE);
+        contract = new Contract(ContractType.DSL, PRICE_1);
         customer = new Customer();
     }
 
@@ -87,14 +85,13 @@ class ContractServiceTest {
         //Arrange
         when(mockJwtTokenUtil.getUsernameFromToken(anyString())).thenReturn(USERNAME);
         when(mockCustomerRepository.findByUsername(USERNAME)).thenReturn(Optional.of(customer));
-        List<Contract> contracts = new ArrayList<>();
-        contracts.add(new Contract(ContractType.DSL, 799L));
-        contracts.add(new Contract(ContractType.DSL, 1599L));
+        List<Contract> contracts = List.of(new Contract(ContractType.DSL, PRICE_2),
+                new Contract(ContractType.DSL, PRICE_1));
         customer.setContracts(contracts);
         //Act
         long calculatePrice = classUnderTest.calculatePrice(JWT_TOKEN_BEARER);
         //Assert
-        assertThat(calculatePrice).isEqualTo(799L + 1599L);
+        assertThat(calculatePrice).isEqualTo(PRICE_1 + PRICE_2);
     }
 
     @Test

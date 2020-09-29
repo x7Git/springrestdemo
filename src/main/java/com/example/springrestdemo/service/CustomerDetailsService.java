@@ -2,8 +2,6 @@ package com.example.springrestdemo.service;
 
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +13,6 @@ import java.util.List;
 
 @Service
 public class CustomerDetailsService implements UserDetailsService {
-    private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
-
     private final CustomerRepository customerRepository;
 
     @Autowired

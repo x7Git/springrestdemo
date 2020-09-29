@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
+import static com.example.springrestdemo.TestValues.USERNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -34,7 +35,7 @@ class CustomerDetailsServiceTest {
 
     @BeforeEach
     void setUp() {
-        customer = new Customer("username", "Lokesh", "Gupta", "password", RoleType.SERVICE);
+        customer = new Customer(USERNAME, "Lokesh", "Gupta", "password", RoleType.SERVICE);
     }
 
     @Test
