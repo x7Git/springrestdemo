@@ -1,18 +1,13 @@
 package com.example.springrestdemo.service;
 
-import com.example.springrestdemo.authentication.JwtRequest;
-import com.example.springrestdemo.authentication.JwtResponse;
-import com.example.springrestdemo.authentication.JwtTokenUtil;
-import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.repository.CustomerRepository;
 import com.example.springrestdemo.exception.error.NoEntityFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,18 +15,14 @@ import java.util.List;
 
 @Service
 public class CustomerDetailsService implements UserDetailsService {
+    private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
+
+    private final CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private PasswordEncoder bcryptEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    public CustomerDetailsService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
@@ -46,18 +37,5 @@ public class CustomerDetailsService implements UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(customer.getUsername(), customer.getPassword(),
                 simpleGrantedAuthorityList);
-    }
-
-    public Customer addCustomer(Customer customer) {
-        customer.setPassword(bcryptEncoder.encode(customer.getPassword()));
-        return customerRepository.save(customer);
-    }
-
-    public JwtResponse authenticate(JwtRequest authenticationRequest) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-        final var userDetails = loadUserByUsername(authenticationRequest.getUsername());
-        final var token = jwtTokenUtil.generateToken(userDetails);
-        return new JwtResponse(token);
     }
 }

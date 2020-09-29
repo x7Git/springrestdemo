@@ -27,19 +27,16 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnitPlatform.class)
 class CustomerControllerTest {
     private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
-
+    private static final long CUSTOMER_ID = 3489432L;
     @Mock
     private CustomerService mockCustomerService;
-
     @InjectMocks
     private CustomerController classUnderTest;
-
-    private static final long CUSTOMER_ID= 3489432L;
     private Customer customer;
 
     @BeforeEach
-    void setUp(){
-        customer = new Customer("username" , "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
+    void setUp() {
+        customer = new Customer("username", "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
     }
 
     @Test
@@ -71,13 +68,13 @@ class CustomerControllerTest {
 
     @Test
     void putCustomer_customerUpdated_ok() {
-            //Arrange
-            MockHttpServletRequest request = new MockHttpServletRequest();
-            RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-            //Act
-            ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customer);
-            //Assert
-            assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
+        //Arrange
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        //Act
+        ResponseEntity<String> responseEntity = classUnderTest.putCustomer(customer);
+        //Assert
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }
 
     @Test

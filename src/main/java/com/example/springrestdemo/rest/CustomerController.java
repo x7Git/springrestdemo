@@ -1,5 +1,6 @@
 package com.example.springrestdemo.rest;
 
+import com.example.springrestdemo.authentication.JwtRequest;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,4 +52,12 @@ public class CustomerController {
         customerService.deleteCustomer(customerId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody JwtRequest changePasswordRequest,
+                                            @RequestHeader("Authorization") String jwtToken) {
+        customerService.changePassword(changePasswordRequest, jwtToken);
+        return ResponseEntity.noContent().build();
+    }
+
 }

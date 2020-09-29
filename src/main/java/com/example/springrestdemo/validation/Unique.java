@@ -13,6 +13,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueValidator.class)
 public @interface Unique {
     String message() default "Scheiße";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

@@ -98,12 +98,12 @@ public class Customer extends RepresentationModel<Customer> implements Iterable<
         this.lastName = lastName;
     }
 
-    public void setContracts(List<Contract> contracts) {
-        this.contracts = contracts;
-    }
-
     public List<Contract> getContracts() {
         return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
     }
 
     public String getPassword() {

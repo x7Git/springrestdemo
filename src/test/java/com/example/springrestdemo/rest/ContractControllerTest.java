@@ -24,18 +24,17 @@ import static org.mockito.Mockito.when;
 @RunWith(JUnitPlatform.class)
 class ContractControllerTest {
     private static final String JWT_TOKEN_BEARER = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTU5MjE1MTg3OSwiaWF0IjoxNTkyMTMzODc5fQ._pdSAQ1to8m181swsja4tF7bB-zteJzxx3gQMaJx5jbRzVcHo7hWrLgQlixh_yOyiLZ-Z7JcFCvINVkAbUGr6Q";
-    @Mock
-    private ContractService mockContractService;
-
-    @InjectMocks
-    private ContractController classUnderTest;
-
-    private Contract contract;
     private static final long CUSTOMER_ID = 3489432L;
     private static final long PRICE = 1599L;
+    @Mock
+    private ContractService mockContractService;
+    @InjectMocks
+    private ContractController classUnderTest;
+    private Contract contract;
+
     @BeforeEach
-    public void setup(){
-        contract = new Contract(ContractType.DSL,PRICE);
+    public void setup() {
+        contract = new Contract(ContractType.DSL, PRICE);
     }
 
     @Test
@@ -62,8 +61,9 @@ class ContractControllerTest {
         //Assert
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(204);
     }
+
     @Test
-    void getPrice_calculatePrice_ok(){
+    void getPrice_calculatePrice_ok() {
         //Arrange
         long price = 7496L;
         MockHttpServletRequest request = new MockHttpServletRequest();

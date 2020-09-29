@@ -4,7 +4,6 @@ import com.example.springrestdemo.authentication.JwtRequest;
 import com.example.springrestdemo.authentication.JwtResponse;
 import com.example.springrestdemo.db.entity.Customer;
 import com.example.springrestdemo.db.entity.enumeration.RoleType;
-import com.example.springrestdemo.service.CustomerDetailsService;
 import com.example.springrestdemo.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,20 +18,15 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 @RunWith(JUnitPlatform.class)
 class AuthenticationControllerTest {
 
     @Mock
-    private CustomerDetailsService mockCustomerDetailService;
+    private CustomerService mockCustomerService;
 
     @InjectMocks
     private AuthenticationController classUnderTest;
@@ -40,9 +34,10 @@ class AuthenticationControllerTest {
     private Customer customer;
 
     @BeforeEach
-    void setUp(){
-        customer = new Customer("username" , "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
+    void setUp() {
+        customer = new Customer("username", "Lokesh", "Gupta", "password", RoleType.CUSTOMER);
     }
+
     @Test
     void createAuthenticationToken_generateToken_ok() {
         //Arrange
@@ -50,7 +45,7 @@ class AuthenticationControllerTest {
         JwtResponse jwtResponse = new JwtResponse("Bearer TOKEN");
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(mockCustomerDetailService.authenticate(jwtRequest)).thenReturn(jwtResponse);
+        when(mockCustomerService.authenticate(jwtRequest)).thenReturn(jwtResponse);
         //Act
         ResponseEntity<JwtResponse> responseEntity = classUnderTest.createAuthenticationToken(jwtRequest);
         //Assert
@@ -63,7 +58,7 @@ class AuthenticationControllerTest {
         //Arrange
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        when(mockCustomerDetailService.addCustomer(customer)).thenReturn(customer);
+        when(mockCustomerService.addCustomer(customer)).thenReturn(customer);
         //Act
         ResponseEntity<?> responseEntity = classUnderTest.postCustomer(customer);
         //Assert

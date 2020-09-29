@@ -25,11 +25,14 @@ import static com.example.springrestdemo.rest.CtxPath.PATHS_WITHOUT_AUTHENTICATI
 public class JwtRequestFilter extends OncePerRequestFilter {
     private final Logger logger = LoggerFactory.getLogger(JwtRequestFilter.class);
 
-    @Autowired
-    private CustomerDetailsService customerDetailsService;
+    private final CustomerDetailsService customerDetailsService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+    public JwtRequestFilter(CustomerDetailsService customerDetailsService, JwtTokenUtil jwtTokenUtil) {
+        this.customerDetailsService = customerDetailsService;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain chain)

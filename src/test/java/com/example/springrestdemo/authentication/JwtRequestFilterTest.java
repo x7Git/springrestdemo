@@ -93,7 +93,7 @@ class JwtRequestFilterTest {
     @Test
     void getUsername_UnableToGetToken_usernameIsEmpty() {
         //Arrange
-        when(mockJwtTokenUtil.getUsernameFromToken(JWT_TOKEN)).thenThrow(IllegalArgumentException .class);
+        when(mockJwtTokenUtil.getUsernameFromToken(JWT_TOKEN)).thenThrow(IllegalArgumentException.class);
         //Act
         String username = classUnderTest.getUserName(JWT_TOKEN);
         //Assert
@@ -119,5 +119,5 @@ class JwtRequestFilterTest {
         when(mockJwtTokenUtil.validateToken(anyString(), any())).thenReturn(true);
         //Act
         classUnderTest.authenticateUser(mock(UserDetails.class), "Token", request);
-   }
+    }
 }

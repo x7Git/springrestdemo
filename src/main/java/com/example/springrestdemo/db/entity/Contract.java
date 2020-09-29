@@ -47,10 +47,6 @@ public class Contract {
     public Contract() {
     }
 
-    public void setContractType(ContractType contractType) {
-        this.contractType = contractType;
-    }
-
     public long getContractId() {
         return contractId;
     }
@@ -59,10 +55,15 @@ public class Contract {
         return contractType;
     }
 
+    public void setContractType(ContractType contractType) {
+        this.contractType = contractType;
+    }
+
     public Customer getCustomer() {
         return customer;
     }
-    public void setCustomer(Customer customer){
+
+    public void setCustomer(Customer customer) {
         this.customer = customer;
     }
 
